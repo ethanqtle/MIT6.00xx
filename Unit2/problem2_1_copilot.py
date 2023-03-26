@@ -48,7 +48,7 @@ def oneYearBalance(balance, aRate, monPayRate):
         balance = monBalance(balance, aRate, monPayRate)
     return balance
 
-balance = 484
-annualInterestRate = 0.2
-monthlyPaymentRate = 0.04
+# balance = 484
+# annualInterestRate = 0.2
+# monthlyPaymentRate = 0.04
 print("Remaining balance: " + str(round(oneYearBalance(balance, annualInterestRate, monthlyPaymentRate),2)))
