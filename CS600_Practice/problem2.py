@@ -44,3 +44,4 @@ for n in range(150, 0, -1):
     if sol[n] == None:
         print("The largest n that cannot be bought in exact quantity is", n)
         break
+
