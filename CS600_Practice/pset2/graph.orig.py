@@ -10,10 +10,8 @@ import unittest
 # A set of data structures to represent graphs
 #
 
-
 class Node(object):
     """Represents a node in the graph"""
-
     def __init__(self, name):
         self.name = str(name)
 
@@ -41,7 +39,6 @@ class Node(object):
 class Edge(object):
     """Represents an edge in the dictionary. Includes a source and
     a destination."""
-
     def __init__(self, src, dest):
         self.src = src
         self.dest = dest
@@ -58,24 +55,20 @@ class Edge(object):
 
 class WeightedEdge(Edge):
     def __init__(self, src, dest, total_distance, outdoor_distance):
-        Edge.__init__(self, src, dest)
-        self.total_distance = total_distance
-        self.outdoor_distance = outdoor_distance
+        pass  # TODO
 
     def get_total_distance(self):
-        return self.total_distance
+        pass  # TODO
 
     def get_outdoor_distance(self):
-        return self.outdoor_distance
+        pass  # TODO
 
     def __str__(self):
-        return Edge.__str__(self) + ' ({}, {})'.format(self.total_distance,
-                                                       self.outdoor_distance)
+        pass  # TODO
 
 
 class Digraph(object):
     """Represents a directed graph of Node and Edge objects"""
-
     def __init__(self):
         self.nodes = set([])
         self.edges = {}  # must be a dict of Node -> list of edges
@@ -97,23 +90,14 @@ class Digraph(object):
     def add_node(self, node):
         """Adds a Node object to the Digraph. Raises a ValueError if it is
         already in the graph."""
-        if node in self.nodes:
-            raise ValueError('Duplicate node')
-        else:
-            self.nodes.add(node)
-            self.edges[node] = []
-
+        pass  # TODO
 
     def add_edge(self, edge):
         """Adds an Edge or WeightedEdge instance to the Digraph. Raises a
         ValueError if either of the nodes associated with the edge is not
         in the  graph."""
-        src = edge.get_source()
-        dest = edge.get_destination()
-        if not (src in self.nodes and dest in self.nodes):
-            raise ValueError('Node not in graph')
-        self.edges[src].append(edge)
-        
+        pass  # TODO
+
 
 # ================================================================
 # Begin tests -- you do not need to modify anything below this line

@@ -43,24 +43,12 @@ def load_map(map_filename):
         a Digraph representing the map
     """
 
+    # TODO
     print("Loading map from file...")
-    map_fh = open(map_filename, 'r')
-    map_graph = Digraph()
-    for line in map_fh:
-        from_node, to_node, total_dist, out_dist = line.split()
-        if not map_graph.has_node(Node(from_node)):
-            map_graph.add_node(Node(from_node))
-        if not map_graph.has_node(Node(to_node)):
-            map_graph.add_node(Node(to_node))
-        map_graph.add_edge(WeightedEdge(Node(from_node), Node(to_node),
-                                        int(total_dist), int(out_dist)))
-    return map_graph
-
 
 # Problem 2c: Testing load_map
 # Include the lines used to test load_map below, but comment them out
-# map_graph = load_map("mit_map.txt")
-# print("Loaded map from file!")
+
 
 #
 # Problem 3: Finding the Shorest Path using Optimized Search Method
@@ -107,21 +95,8 @@ def get_best_path(digraph, start, end, path, max_dist_outdoors, best_dist,
         If there exists no path that satisfies max_total_dist and
         max_dist_outdoors constraints, then return None.
     """
-    if start == end:
-        return path
-    for edge in digraph.get_edges_for_node(Node(start)):
-        if edge.get_destination().get_name() not in path[0]:
-            new_path = path[0] + [edge.get_destination().get_name()]
-            total_dist = path[1] + edge.get_total_distance()
-            out_dist = path[2] + edge.get_outdoor_distance()
-            if out_dist <= max_dist_outdoors:
-                if total_dist < best_dist:
-                    best_path = get_best_path(digraph, edge.get_destination().get_name(), end,
-                                              [new_path, total_dist, out_dist], max_dist_outdoors,
-                                              best_dist, best_path)
-                    if best_path is not None:
-                        best_dist = best_path[1]
-    return best_path
+    # TODO
+    pass
 
 
 # Problem 3c: Implement directed_dfs
@@ -153,13 +128,8 @@ def directed_dfs(digraph, start, end, max_total_dist, max_dist_outdoors):
         If there exists no path that satisfies max_total_dist and
         max_dist_outdoors constraints, then raises a ValueError.
     """
-    best_path = get_best_path(digraph, start, end, [[start], 0, 0], max_dist_outdoors,
-                              max_total_dist, None)
-    if best_path is None:
-        raise ValueError
-    return best_path[0]
-
-    
+    # TODO
+    pass
 
 
 # ================================================================
