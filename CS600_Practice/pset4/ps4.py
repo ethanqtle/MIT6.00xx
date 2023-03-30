@@ -8,7 +8,7 @@ import numpy as np
 import pylab as pl
 import random
 
-TestProblem2 = True
+TestProblem2 = False
 TestProblem5a = False
 TestProblem5b = False
 
@@ -561,8 +561,8 @@ def simulation_with_antibiotic(num_bacteria,
             resistant_population.append(patient.get_resist_pop())
         populations.append(total_population)
         resistant_pop.append(resistant_population)
-    make_two_curve_plot(range(400), populations, resistant_pop, 'Total',
-                        'Resistant', 'Timestep', 'Population', 'With Antibiotic')
+    # make_two_curve_plot(range(400), populations, resistant_pop, 'Total',
+    #                     'Resistant', 'Timestep', 'Population', 'With Antibiotic')
     return populations, resistant_pop
 
 
