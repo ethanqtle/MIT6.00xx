@@ -15,7 +15,7 @@ import pylab
 # If you get a "Bad magic number" ImportError, you are not using Python 3.5 
 
 # For Python 3.6:
-from ps2_verify_movement36 import testRobotMovement
+from ps2_verify_movement39 import testRobotMovement
 # If you get a "Bad magic number" ImportError, you are not using Python 3.6
 
 
@@ -175,7 +175,12 @@ class Robot(object):
         room:  a RectangularRoom object.
         speed: a float (speed > 0)
         """
-        raise NotImplementedError
+        self.room = room
+        self.speed = speed
+        self.position = room.getRandomPosition()
+        self.direction = random.random() * 360
+        self.room.cleanTileAtPosition(self.position)
+
 
     def getRobotPosition(self):
         """
@@ -183,7 +188,7 @@ class Robot(object):
 
         returns: a Position object giving the robot's position.
         """
-        raise NotImplementedError
+        return self.position
     
     def getRobotDirection(self):
         """
@@ -192,7 +197,7 @@ class Robot(object):
         returns: an integer d giving the direction of the robot as an angle in
         degrees, 0 <= d < 360.
         """
-        raise NotImplementedError
+        return self.direction
 
     def setRobotPosition(self, position):
         """
@@ -200,7 +205,7 @@ class Robot(object):
 
         position: a Position object.
         """
-        raise NotImplementedError
+        self.position = position
 
     def setRobotDirection(self, direction):
         """
@@ -208,7 +213,7 @@ class Robot(object):
 
         direction: integer representing an angle in degrees
         """
-        raise NotImplementedError
+        self.direction = direction
 
     def updatePositionAndClean(self):
         """
@@ -236,11 +241,23 @@ class StandardRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
+        # get current position and direction
+        current_position = self.getRobotPosition()
+        current_direction = self.getRobotDirection()
+        # calculate new position
+        new_position = current_position.getNewPosition(current_direction, self.speed)
+        # check if new position is in room
+        if self.room.isPositionInRoom(new_position):
+            # update position and clean tile
+            self.setRobotPosition(new_position)
+            self.room.cleanTileAtPosition(new_position)
+        else:
+            # update direction
+            self.setRobotDirection(random.random() * 360)
 
 
 # Uncomment this line to see your implementation of StandardRobot in action!
-##testRobotMovement(StandardRobot, RectangularRoom)
+# testRobotMovement(StandardRobot, RectangularRoom)
 
 
 # === Problem 4
@@ -262,7 +279,32 @@ def runSimulation(num_robots, speed, width, height, min_coverage, num_trials,
     robot_type: class of robot to be instantiated (e.g. StandardRobot or
                 RandomWalkRobot)
     """
-    raise NotImplementedError
+    # create a list to store the number of time-steps for each trial
+    time_steps = []
+    # run the simulation for num_trials times
+    for trial in range(num_trials):
+        # create a room
+        room = RectangularRoom(width, height)
+        # create a list to store the robots
+        robots = []
+        # create robots
+        for robot in range(num_robots):
+            robots.append(robot_type(room, speed))
+        # initialize time-steps
+        time_step = 0
+        # run the simulation until the room is cleaned
+        while room.getNumCleanedTiles() < min_coverage * room.getNumTiles():
+            # update position and clean for each robot
+            for robot in robots:
+                robot.updatePositionAndClean()
+            # update time-steps
+            time_step += 1
+        # add the number of time-steps for this trial to the list
+        time_steps.append(time_step)
+    # calculate the mean number of time-steps
+    mean_time_steps = sum(time_steps) / len(time_steps)
+    return mean_time_steps
+
 
 # Uncomment this line to see how much your simulation takes on average
 ##print(runSimulation(1, 1.0, 10, 10, 0.75, 30, StandardRobot))
@@ -281,7 +323,18 @@ class RandomWalkRobot(Robot):
         Move the robot to a new position and mark the tile it is on as having
         been cleaned.
         """
-        raise NotImplementedError
+        # get current position and direction
+        current_position = self.getRobotPosition()
+        current_direction = self.getRobotDirection()
+        # calculate new position
+        new_position = current_position.getNewPosition(current_direction, self.speed)
+        # check if new position is in room
+        if self.room.isPositionInRoom(new_position):
+            # update position and clean tile
+            self.setRobotPosition(new_position)
+            self.room.cleanTileAtPosition(new_position)
+        # update direction
+        self.setRobotDirection(random.random() * 360)
 
 
 def showPlot1(title, x_label, y_label):
@@ -335,7 +388,8 @@ def showPlot2(title, x_label, y_label):
 #     plot.
 #
 #       (... your call here ...)
-#
+
+showPlot1('Time to clean 80% for 1-10 robots', 'num_robots', 'clean time')
 
 #
 # 2) Write a function call to showPlot2 that generates an appropriately-labeled
@@ -343,3 +397,4 @@ def showPlot2(title, x_label, y_label):
 #
 #       (... your call here ...)
 #
+showPlot2('Time for 2 robots to clean various shape rooms', 'room aspect ratio', 'clean time')
