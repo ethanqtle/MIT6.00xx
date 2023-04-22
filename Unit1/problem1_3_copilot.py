@@ -1,22 +1,38 @@
-# Assume s is a string of lower case characters.
 
-# Write a program that prints the longest substring of s in which the letters occur in alphabetical order. For example, if s = 'azcbobobegghakl', then your program should print
+s = 'azcbobobegghakl'
+
+## Assume s is a string of lower case characters.
+
+# Write a program that prints the longest substring of s in which the letters occur
+# in alphabetical order. For example, if s = 'azcbobobegghakl', then your program should print
 
 # Longest substring in alphabetical order is: beggh
-# In the case of ties, print the first substring. For example, if s = 'abcbcd', then your program should print
+# In the case of ties, print the first substring. For example, if s = 'abcbcd',
+# then your program should print
 
 # Longest substring in alphabetical order is: abc
+# Note: This problem may be challenging. We encourage you to work smart. If you've spent 
+# more than a few hours on this problem, we suggest that you move on to a different part 
+# of the course. If you have time, come back to this problem after you've had a break 
+# and cleared your head.
 
-counts = 0
-longest = ""
-for i in range(len(s)):
-    if i == 0:
-        longest = s[i]
-        counts = 1
-    elif s[i] >= s[i-1]:
-        counts += 1
-        if counts > len(longest):
-            longest = s[i-counts+1:i+1]
+# Paste your code into this box 
+
+bestIndex  = 0
+bestLength = 1
+currIndex  = 0
+currLength = 1
+for i in range(1,len(s)):
+    if s[i-1] <= s[i]:
+        currLength += 1
     else:
-        counts = 1
-print("Longest substring in alphabetical order is: " + longest)
+        if currLength > bestLength:
+            bestIndex = currIndex
+            bestLength = currLength
+        currIndex  = i
+        currLength = 1
+
+if currLength > bestLength:
+    bestIndex = currIndex
+    bestLength = currLength
+print('Longest substring in alphabetical order is:', s[bestIndex:bestIndex+bestLength])
