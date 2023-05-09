@@ -117,6 +117,7 @@ class Climate(object):
 End helper code
 """
 
+import numpy as np
 # Problem 1
 def generate_models(x, y, degs):
     """
@@ -130,8 +131,11 @@ def generate_models(x, y, degs):
         a list of numpy arrays, where each array is a 1-d array of coefficients
         that minimizes the squared error of the fitting polynomial
     """
-    # TODO
-    pass
+    models = []
+    for deg in degs:
+        models.append(np.polyfit(x, y, deg))
+    return models
+
 
 # Problem 2
 def r_squared(y, estimated):
@@ -143,8 +147,9 @@ def r_squared(y, estimated):
     Returns:
         a float for the R-squared error term
     """
-    # TODO
-    pass
+    r_squared = 1 - (np.sum((np.array(y) - np.array(estimated))**2) / np.sum((np.array(y) - np.mean(y))**2))
+    return r_squared
+   
 
 # Problem 3
 def evaluate_models_on_training(x, y, models):
@@ -168,9 +173,26 @@ def evaluate_models_on_training(x, y, models):
     Returns:
         None
     """
-    # TODO
-    pass
+    # save best model r_squared
+    best_r_squared = 0
+    best_model = None
+    for model in models:
+        y_estimated = np.polyval(model, x)
+        r_squared_val = r_squared(y, y_estimated)
+        if r_squared_val > best_r_squared:
+            best_r_squared = r_squared_val
+            best_model = model
 
+    # plot best model
+    y_estimated = np.polyval(best_model, x)
+    pylab.plot(x, y, 'bo', label = 'Measured points')
+    pylab.plot(x, y_estimated, 'r-', label = 'Best fit curve')
+    pylab.xlabel('Years')
+    pylab.ylabel('Temperatures')
+    # label title with degree of best model and r_squared
+    pylab.title('Degree of best model: ' + str(len(best_model) - 1) + '\nR-squared = ' + str(round(best_r_squared, 4)))
+    pylab.legend(loc = 'best')
+    pylab.show()
 
 ### Begining of program
 raw_data = Climate('data.csv')
@@ -189,5 +211,8 @@ x1 = INTERVAL_1
 x2 = INTERVAL_2
 y = []
 # MISSING LINES
+for year in INTERVAL_1:
+    y.append(np.mean(raw_data.get_yearly_temp('BOSTON', year)))
+
 models = generate_models(x, y, [1])    
 evaluate_models_on_training(x, y, models)
