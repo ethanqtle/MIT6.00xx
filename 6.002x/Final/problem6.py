@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+import scipy.signal as signal
 
 import os
 os.environ["OPENBLAS_NUM_THREADS"] = "1"
